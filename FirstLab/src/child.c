@@ -55,7 +55,7 @@ int main () {
                 _exit(0);
             }
 
-            if (is_prime(num)) {
+            if (!is_prime(num)) {
                 write(1, buffer, pos);
             }
             else {
