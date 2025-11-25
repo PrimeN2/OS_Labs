@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <string.h>
 #include "parallel_merge_sort.h"
 #include "timer.h"
@@ -24,7 +25,11 @@ int main(void) {
     timer_start(&timer);
     merge_sort_sequential(arr, temp, 0, ARRAY_SIZE - 1);
     timer_stop(&timer);
-    printf("Sequential time: %.2f ms\n", timer_elapsed_ms(&timer));
+    double elapsed_time = timer_elapsed_ms(&timer);
+    char buffer[100]; 
+    int len = snprintf(buffer, sizeof(buffer), "Sequential time: %.2f ms\n", elapsed_time);
+
+    write(1, buffer, len);
 
     int thread_counts[] = {2, 4, 8};
     int num_tests = sizeof(thread_counts) / sizeof(thread_counts[0]);
@@ -34,7 +39,12 @@ int main(void) {
         timer_start(&timer);
         merge_sort_parallel(arr, temp, 0, ARRAY_SIZE - 1, thread_counts[i]);
         timer_stop(&timer);
-        printf("Parallel (%d threads): %.2f ms\n", thread_counts[i], timer_elapsed_ms(&timer));
+        double elapsed_time = timer_elapsed_ms(&timer);
+
+        char buffer[200]; 
+        int len = snprintf(buffer, sizeof(buffer), "Parallel (%d threads): %.2f ms\n", thread_counts[i], elapsed_time);
+
+        write(1, buffer, len);
     }
 
     free(original);

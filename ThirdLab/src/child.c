@@ -24,7 +24,7 @@ int is_prime(int n) {
 
 int main(int argc, char *argv[]) {
     if (argc != 5) {
-        fprintf(stderr, "Usage: %s <filename> <shm_name> <sem_empty> <sem_full>\n", argv[0]);
+        write(2, "Usage: <filename> <shm_name> <sem_empty> <sem_full>\n", sizeof("Usage: %s <filename> <shm_name> <sem_empty> <sem_full>\n"));
         exit(1);
     }
 

@@ -17,12 +17,16 @@ typedef struct {
 
 int main() {
     char filename[256];
-    printf("Enter filename: ");
-    fflush(stdout);
-    if (!fgets(filename, sizeof(filename), stdin)) {
-        perror("Failed to read filename");
+    const char prompt[] = "Enter filename: ";
+    write(1, prompt, sizeof(prompt) - 1); 
+
+    int bytes_read = read(0, filename, sizeof(filename) - 1); 
+    if (bytes_read == -1) {
+        write(2, "Failed to read filename\n", 24);
         exit(1);
     }
+
+    filename[bytes_read] = '\0';
     filename[strcspn(filename, "\n")] = 0;
 
     char shm_name[64];
